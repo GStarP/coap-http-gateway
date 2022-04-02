@@ -19,26 +19,24 @@ export function initCOAPServer(config, axios, logger) {
         const pathname = req.url;
         // 将 COAP 请求转换为 HTTP 请求发送到服务端
         const httpURL = `http://${config.server.host}:${config.server.port}${pathname}`;
-        logger.log(`=>[HTTP]\t${req.method}\t${httpURL}`);
+        logger.log(`=>[HTTP]\t${req.method}\t${httpURL}\t${json}`);
         axios
           .post(httpURL, json)
-          .then((httpRes) => {
-            // COAP 兼容 HTTP 的状态码
-            res.code = httpRes.statusCode;
-            // 将服务器的响应回传
-            res.end(httpRes.data || null);
+          .then((r) => {
+            res.code = '2.00';
+            res.end();
           })
           .catch((e) => {
-            logger.log(`[HTTP](X) ${e}`);
+            console.error(e);
             // 请求出错返回 5.02 Bad Gateway
-            res.code = 5.02;
-            res.end('Gateway HTTP Failed');
+            res.code = '5.02';
+            res.end();
           });
       }
     } else {
       // 其它请求认为是 4.00 Bad Request
-      res.code = 4.0;
-      res.end('Bad Request');
+      res.code = '4.0';
+      res.end();
     }
   });
 

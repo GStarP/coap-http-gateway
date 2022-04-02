@@ -3,8 +3,8 @@ const CONFIG = {
     base: 'log'
   },
   server: {
-    host: '127.0.0.1',
-    port: 8080
+    host: '172.19.241.103',
+    port: 18080
   },
   coapServer: {
     port: 5683
